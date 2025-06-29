@@ -8,6 +8,8 @@ import bubbleSort from "../../../algorithms/bubbleSort.js";
 import quickSort from "../../../algorithms/quickSort.js";
 import heapSort from "../../../algorithms/heapSort.js";
 import mergeSort from "../../../algorithms/mergeSort.js";
+import selectionSort from "../../../algorithms/selectionSort.js";
+import insertionSort from "../../../algorithms/insertionSort.js";
 
 const mapStateToProps = ({
   array,
@@ -38,7 +40,9 @@ const mapDispatchToProps = () => dispatch => ({
       bubbleSort : algorithm === "quickSort" ?
         quickSort : algorithm === "heapSort" ?
           heapSort : algorithm === "mergeSort" ?
-            mergeSort : null;
+            mergeSort : algorithm === "selectionSort" ?
+              selectionSort : algorithm === "insertionSort" ?
+                insertionSort : null;
     dispatch(setCurrentSorted([]));
     dispatch(setRunning(true));
     doSort(array, dispatch, speed);

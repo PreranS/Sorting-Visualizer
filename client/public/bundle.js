@@ -24518,6 +24518,14 @@
 	
 	var _mergeSort2 = _interopRequireDefault(_mergeSort);
 	
+	var _selectionSort = __webpack_require__(/*! ../../../algorithms/selectionSort.js */ 401);
+	
+	var _selectionSort2 = _interopRequireDefault(_selectionSort);
+	
+	var _insertionSort = __webpack_require__(/*! ../../../algorithms/insertionSort.js */ 402);
+	
+	var _insertionSort2 = _interopRequireDefault(_insertionSort);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapStateToProps = function mapStateToProps(_ref) {
@@ -24548,7 +24556,7 @@
 	      },
 	
 	      sort: function sort(algorithm, array, speed) {
-	        var doSort = algorithm === "bubbleSort" ? _bubbleSort2.default : algorithm === "quickSort" ? _quickSort2.default : algorithm === "heapSort" ? _heapSort2.default : algorithm === "mergeSort" ? _mergeSort2.default : null;
+	        var doSort = algorithm === "bubbleSort" ? _bubbleSort2.default : algorithm === "quickSort" ? _quickSort2.default : algorithm === "heapSort" ? _heapSort2.default : algorithm === "mergeSort" ? _mergeSort2.default : algorithm === "selectionSort" ? _selectionSort2.default : algorithm === "insertionSort" ? _insertionSort2.default : null;
 	        dispatch((0, _sorted.setCurrentSorted)([]));
 	        dispatch((0, _running.setRunning)(true));
 	        doSort(array, dispatch, speed);
@@ -24642,28 +24650,63 @@
 	      var speed = 570 - Math.pow(array.length, 2) > 0 ? 570 - Math.pow(array.length, 2) : 0;
 	
 	      var color = isRunning ? "rgba(214, 29, 29, 0.8)" : "white";
-	
 	      var cursor = isRunning ? "auto" : "pointer";
 	
+	      var complexities = {
+	        bubbleSort: {
+	          name: 'Bubble Sort',
+	          time: 'O(n²)',
+	          space: 'O(1)'
+	        },
+	        selectionSort: {
+	          name: 'Selection Sort',
+	          time: 'O(n²)',
+	          space: 'O(1)'
+	        },
+	        insertionSort: {
+	          name: 'Insertion Sort',
+	          time: 'O(n²)',
+	          space: 'O(1)'
+	        },
+	        mergeSort: {
+	          name: 'Merge Sort',
+	          time: 'O(n log n)',
+	          space: 'O(n)'
+	        },
+	        quickSort: {
+	          name: 'Quick Sort',
+	          time: 'O(n log n)',
+	          space: 'O(log n)'
+	        },
+	        heapSort: {
+	          name: 'Heap Sort',
+	          time: 'O(n log n)',
+	          space: 'O(1)'
+	        }
+	      };
+	      var currentComplexity = complexities[algorithm] || null;
+	
 	      return _react2.default.createElement(
-	        "div",
-	        { id: "toolbar" },
+	        "nav",
+	        { id: "toolbar", role: "toolbar", "aria-label": "Sorting Controls" },
 	        _react2.default.createElement(
-	          "div",
+	          "button",
 	          {
 	            id: !isRunning ? "generateArray" : "generateArrayX",
 	            style: { color: color, cursor: cursor },
 	            onClick: !isRunning ? function () {
 	              return generateArray(array.length);
-	            } : null },
+	            } : null,
+	            disabled: isRunning,
+	            "aria-label": "Generate New Array",
+	            title: "Generate a new random array"
+	          },
 	          "Generate New Array"
 	        ),
-	        _react2.default.createElement("div", { className: "separator" }),
+	        _react2.default.createElement("div", { className: "separator", "aria-hidden": "true" }),
 	        _react2.default.createElement(
-	          "div",
-	          {
-	            id: "arraySize",
-	            style: { color: color } },
+	          "label",
+	          { id: "arraySize", htmlFor: "changeSize", style: { color: color } },
 	          "Change Array Size & Sorting Speed"
 	        ),
 	        _react2.default.createElement("input", {
@@ -24672,57 +24715,132 @@
 	          min: "0",
 	          max: "100",
 	          style: { background: color, cursor: cursor },
-	          disabled: isRunning ? "disabled" : null,
-	          onChange: this.handleChange
+	          disabled: isRunning,
+	          onChange: this.handleChange,
+	          "aria-label": "Change array size and sorting speed"
 	        }),
-	        _react2.default.createElement("div", { className: "separator" }),
 	        _react2.default.createElement(
-	          "div",
+	          "span",
+	          { className: "helper-text", style: { marginLeft: '8px', color: '#ccc', fontSize: '12px' } },
+	          "(Left: Fewer, slower | Right: More, faster)"
+	        ),
+	        _react2.default.createElement("div", { className: "separator", "aria-hidden": "true" }),
+	        _react2.default.createElement(
+	          "button",
 	          {
 	            className: algorithm === "mergeSort" ? "currentAlgorithmButton" : "algorithmButton",
 	            onClick: function onClick() {
 	              return _this2.handleClick("mergeSort");
-	            } },
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Merge Sort",
+	            title: "Use Merge Sort algorithm"
+	          },
 	          "Merge Sort"
 	        ),
 	        _react2.default.createElement(
-	          "div",
+	          "button",
 	          {
 	            className: algorithm === "quickSort" ? "currentAlgorithmButton" : "algorithmButton",
 	            onClick: function onClick() {
 	              return _this2.handleClick("quickSort");
-	            } },
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Quick Sort",
+	            title: "Use Quick Sort algorithm"
+	          },
 	          "Quick Sort"
 	        ),
 	        _react2.default.createElement(
-	          "div",
+	          "button",
 	          {
 	            className: algorithm === "heapSort" ? "currentAlgorithmButton" : "algorithmButton",
 	            onClick: function onClick() {
 	              return _this2.handleClick("heapSort");
-	            } },
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Heap Sort",
+	            title: "Use Heap Sort algorithm"
+	          },
 	          "Heap Sort"
 	        ),
 	        _react2.default.createElement(
-	          "div",
+	          "button",
 	          {
 	            className: algorithm === "bubbleSort" ? "currentAlgorithmButton" : "algorithmButton",
 	            onClick: function onClick() {
 	              return _this2.handleClick("bubbleSort");
-	            } },
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Bubble Sort",
+	            title: "Use Bubble Sort algorithm"
+	          },
 	          "Bubble Sort"
 	        ),
-	        _react2.default.createElement("div", { className: "separator" }),
+	        _react2.default.createElement(
+	          "button",
+	          {
+	            className: algorithm === "selectionSort" ? "currentAlgorithmButton" : "algorithmButton",
+	            onClick: function onClick() {
+	              return _this2.handleClick("selectionSort");
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Selection Sort",
+	            title: "Use Selection Sort algorithm"
+	          },
+	          "Selection Sort"
+	        ),
+	        _react2.default.createElement(
+	          "button",
+	          {
+	            className: algorithm === "insertionSort" ? "currentAlgorithmButton" : "algorithmButton",
+	            onClick: function onClick() {
+	              return _this2.handleClick("insertionSort");
+	            },
+	            disabled: isRunning,
+	            "aria-label": "Select Insertion Sort",
+	            title: "Use Insertion Sort algorithm"
+	          },
+	          "Insertion Sort"
+	        ),
+	        _react2.default.createElement("div", { className: "separator", "aria-hidden": "true" }),
 	        algorithm ? _react2.default.createElement(
-	          "div",
+	          "button",
 	          {
 	            id: "sort",
 	            style: { color: color, cursor: cursor },
 	            onClick: !isRunning ? function () {
 	              return sort(algorithm, array, speed);
-	            } : null },
-	          "Sort!"
-	        ) : null
+	            } : null,
+	            disabled: isRunning,
+	            "aria-label": "Sort the array",
+	            title: "Start sorting the array"
+	          },
+	          isRunning ? 'Sorting...' : 'Sort!'
+	        ) : null,
+	        algorithm && currentComplexity && _react2.default.createElement(
+	          "div",
+	          { className: "complexity-info" + (isRunning ? ' running' : '') },
+	          _react2.default.createElement(
+	            "strong",
+	            null,
+	            currentComplexity.name,
+	            " Complexity:"
+	          ),
+	          _react2.default.createElement("br", null),
+	          "Time: ",
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            currentComplexity.time
+	          ),
+	          " \xA0|\xA0 Space: ",
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            currentComplexity.space
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -24773,7 +24891,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#toolbar {\n  width: 100%;\n  height: 100px;\n  background-color: #34495e;\n}\n\n#generateArray {\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 25px;\n  margin-right: 15px;\n}\n\n#generateArray:hover {\n  color: rgb(212, 212, 212) !important;\n}\n\n#generateArrayX {\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 25px;\n  margin-right: 15px;\n}\n\n#arraySize {\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 15px;\n  margin-right: 15px;\n}\n\n#changeSize {\n  outline: none;\n  margin-right: 15px;\n}\n\n.separator {\n  width: 5px;\n  height: 55px;\n  background-color: rgba(0, 0, 0, 0.8);\n  margin-left: 15px;\n  margin-right: 15px;\n  display: inline-block;\n}\n\n.algorithmButton {\n  color: white;\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 15px;\n  margin-right: 15px;\n  cursor: pointer;\n}\n\n.algorithmButton:hover {\n  color: rgb(212, 212, 212);\n}\n\n.currentAlgorithmButton {\n  color: rgb(241, 94, 255);\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 15px;\n  margin-right: 15px;\n  cursor: pointer;\n}\n\n#sort {\n  font-size: 16px;\n  font-family: monospace;\n  display: inline-block;\n  margin-left: 15px;\n}\n\n#sort:hover {\n  color: rgb(212, 212, 212);\n}\n\ninput[type=range] {\n    -webkit-appearance: none;\n    border: 1px solid white;\n    width: 100px;\n}\n\ninput[type=range]::-webkit-slider-runnable-track {\n    width: 100px;\n    height: 5px;\n    border: none;\n    border-radius: 3px;\n}\n\ninput[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    border: none;\n    height: 16px;\n    width: 16px;\n    border-radius: 50%;\n    background: rgb(241, 94, 255);\n    margin-top: -4px;\n}\n\ninput[type=range]:focus {\n    outline: none;\n}\n\ninput[type=range]:focus::-webkit-slider-runnable-track {\n    background: #ccc;\n}\n\ninput[type=range]::-moz-range-track {\n    width: 100px;\n    height: 5px;\n    border: none;\n    border-radius: 3px;\n}\n\ninput[type=range]::-moz-range-thumb {\n    border: none;\n    height: 16px;\n    width: 16px;\n    border-radius: 50%;\n    background: rgb(241, 94, 255);\n}\n\ninput[type=range]:-moz-focusring{\n    outline: 1px solid white;\n    outline-offset: -1px;\n}\n\ninput[type=range]::-ms-track {\n    width: 100px;\n    height: 5px;\n    background: transparent;\n    border-color: transparent;\n    border-width: 6px 0;\n    color: transparent;\n}\n\ninput[type=range]::-ms-fill-lower {\n    background: #777;\n    border-radius: 10px;\n}\n\ninput[type=range]::-ms-fill-upper {\n    border-radius: 10px;\n}\n\ninput[type=range]::-ms-thumb {\n    border: none;\n    height: 16px;\n    width: 16px;\n    border-radius: 50%;\n    background: rgb(241, 94, 255);\n}\n\ninput[type=range]:focus::-ms-fill-lower {\n    background: #888;\n}\n\ninput[type=range]:focus::-ms-fill-upper {\n    background: #ccc;\n}\n", ""]);
+	exports.push([module.id, "#toolbar {\r\n  width: 100%;\r\n  height: 100px;\r\n  background-color: #34495e;\r\n  display: flex;\r\n  align-items: center;\r\n  padding: 0 20px;\r\n  box-shadow: 0 2px 8px rgba(0,0,0,0.08);\r\n  border-radius: 0 0 12px 12px;\r\n  flex-wrap: wrap;\r\n}\r\n\r\nbutton, #generateArray, #generateArrayX {\r\n  font-size: 16px;\r\n  font-family: monospace;\r\n  margin: 0 15px;\r\n  padding: 10px 18px;\r\n  border: none;\r\n  border-radius: 6px;\r\n  background: #2eccfa;\r\n  color: #fff;\r\n  cursor: pointer;\r\n  box-shadow: 0 1px 4px rgba(0,0,0,0.07);\r\n  transition: background 0.2s, color 0.2s, box-shadow 0.2s;\r\n  outline: none;\r\n}\r\n\r\nbutton:hover:not(:disabled), #generateArray:hover:not(:disabled), #generateArrayX:hover:not(:disabled) {\r\n  background: #1abc9c;\r\n  color: #fff;\r\n}\r\n\r\nbutton:disabled {\r\n  background: #888;\r\n  color: #eee;\r\n  cursor: not-allowed;\r\n  opacity: 0.7;\r\n}\r\n\r\n#arraySize {\r\n  font-size: 16px;\r\n  font-family: monospace;\r\n  margin: 0 15px;\r\n  display: inline-block;\r\n}\r\n\r\n#changeSize {\r\n  outline: none;\r\n  margin-right: 15px;\r\n  margin-left: 10px;\r\n}\r\n\r\n.separator {\r\n  width: 5px;\r\n  height: 55px;\r\n  background-color: rgba(0, 0, 0, 0.08);\r\n  margin-left: 15px;\r\n  margin-right: 15px;\r\n  display: inline-block;\r\n  border-radius: 2px;\r\n}\r\n\r\n.algorithmButton {\r\n  background: #2eccfa;\r\n  color: #fff;\r\n  margin: 0 10px;\r\n  border-radius: 6px;\r\n  border: none;\r\n  padding: 10px 18px;\r\n  font-size: 16px;\r\n  font-family: monospace;\r\n  cursor: pointer;\r\n  transition: background 0.2s, color 0.2s;\r\n}\r\n\r\n.algorithmButton:hover {\r\n  background: #1abc9c;\r\n  color: #fff;\r\n}\r\n\r\n.currentAlgorithmButton {\r\n  background: #f15eff;\r\n  color: #fff;\r\n  margin: 0 10px;\r\n  border-radius: 6px;\r\n  border: none;\r\n  padding: 10px 18px;\r\n  font-size: 16px;\r\n  font-family: monospace;\r\n  cursor: pointer;\r\n  box-shadow: 0 2px 8px rgba(241,94,255,0.12);\r\n  transition: background 0.2s, color 0.2s;\r\n}\r\n\r\n#sort {\r\n  font-size: 16px;\r\n  font-family: monospace;\r\n  display: inline-block;\r\n  margin-left: 15px;\r\n  border-radius: 6px;\r\n  padding: 10px 18px;\r\n  background: #2eccfa;\r\n  color: #fff;\r\n  border: none;\r\n  transition: background 0.2s, color 0.2s;\r\n}\r\n\r\n#sort:hover {\r\n  background: #1abc9c;\r\n  color: #fff;\r\n}\r\n\r\n/* Helper text for slider */\r\n.helper-text {\r\n  font-size: 12px;\r\n  color: #ccc;\r\n  margin-left: 8px;\r\n}\r\n\r\ninput[type=range] {\r\n    -webkit-appearance: none;\r\n    border: 1px solid white;\r\n    width: 100px;\r\n}\r\n\r\ninput[type=range]::-webkit-slider-runnable-track {\r\n    width: 100px;\r\n    height: 5px;\r\n    border: none;\r\n    border-radius: 3px;\r\n}\r\n\r\ninput[type=range]::-webkit-slider-thumb {\r\n    -webkit-appearance: none;\r\n    border: none;\r\n    height: 16px;\r\n    width: 16px;\r\n    border-radius: 50%;\r\n    background: rgb(241, 94, 255);\r\n    margin-top: -4px;\r\n}\r\n\r\ninput[type=range]:focus {\r\n    outline: none;\r\n}\r\n\r\ninput[type=range]:focus::-webkit-slider-runnable-track {\r\n    background: #ccc;\r\n}\r\n\r\ninput[type=range]::-moz-range-track {\r\n    width: 100px;\r\n    height: 5px;\r\n    border: none;\r\n    border-radius: 3px;\r\n}\r\n\r\ninput[type=range]::-moz-range-thumb {\r\n    border: none;\r\n    height: 16px;\r\n    width: 16px;\r\n    border-radius: 50%;\r\n    background: rgb(241, 94, 255);\r\n}\r\n\r\ninput[type=range]:-moz-focusring{\r\n    outline: 1px solid white;\r\n    outline-offset: -1px;\r\n}\r\n\r\ninput[type=range]::-ms-track {\r\n    width: 100px;\r\n    height: 5px;\r\n    background: transparent;\r\n    border-color: transparent;\r\n    border-width: 6px 0;\r\n    color: transparent;\r\n}\r\n\r\ninput[type=range]::-ms-fill-lower {\r\n    background: #777;\r\n    border-radius: 10px;\r\n}\r\n\r\ninput[type=range]::-ms-fill-upper {\r\n    border-radius: 10px;\r\n}\r\n\r\ninput[type=range]::-ms-thumb {\r\n    border: none;\r\n    height: 16px;\r\n    width: 16px;\r\n    border-radius: 50%;\r\n    background: rgb(241, 94, 255);\r\n}\r\n\r\ninput[type=range]:focus::-ms-fill-lower {\r\n    background: #888;\r\n}\r\n\r\ninput[type=range]:focus::-ms-fill-upper {\r\n    background: #ccc;\r\n}\r\n\r\n.complexity-info {\r\n  margin-top: 10px;\r\n  font-size: 15px;\r\n  color: #fff;\r\n  background: #2eccfa;\r\n  border-radius: 6px;\r\n  padding: 8px 16px;\r\n  display: inline-block;\r\n  box-shadow: 0 1px 4px rgba(0,0,0,0.07);\r\n  transition: background 0.2s, color 0.2s;\r\n}\r\n.complexity-info.running {\r\n  background: #f15eff;\r\n  color: #fff;\r\n  font-weight: bold;\r\n  animation: pulse 1s infinite alternate;\r\n}\r\n@keyframes pulse {\r\n  0% { box-shadow: 0 0 8px #f15eff44; }\r\n  100% { box-shadow: 0 0 16px #f15effcc; }\r\n}\r\n", ""]);
 	
 	// exports
 
@@ -31726,7 +31844,7 @@
 	          currentMergeX = _props.currentMergeX;
 	
 	
-	      var numWidth = Math.floor($(document).width() / (array.length * 3));
+	      var numWidth = Math.floor(window.innerWidth / (array.length * 3));
 	      var width = numWidth + "px";
 	      var numMargin = array.length < 5 ? 10 : array.length < 8 ? 8 : array.length < 11 ? 6 : array.length < 20 ? 4 : array.length < 50 ? 3.5 : array.length < 100 ? 3 : array.length < 130 ? 2.5 : 2;
 	      var margin = numMargin + "px";
@@ -31736,15 +31854,19 @@
 	
 	      return _react2.default.createElement(
 	        "div",
-	        { id: "bodyContainer" },
+	        { id: "bodyContainer", role: "region", "aria-label": "Sorting Visualization" },
 	        array.length ? array.map(function (number, index) {
-	          var backgroundColor = currentSwappers.includes(index) ? "rgba(219, 57, 57, 0.8)" : currentBubbleTwo.includes(index) || currentQuickTwo.includes(index) || currentHeapThree.includes(index) || currentMergeX.includes(index) ? "rgba(78, 216, 96, 0.8)" : pivot === index ? "rgba(237, 234, 59, 0.8)" : currentSorted.includes(index) ? "rgba(169, 92, 232, 0.8)" : "rgba(66, 134, 244, 0.8)";
+	          var barClass = "arrayElement ";
+	          if (currentSwappers.includes(index)) barClass += "swapper ";else if (currentBubbleTwo.includes(index) || currentQuickTwo.includes(index) || currentHeapThree.includes(index) || currentMergeX.includes(index)) barClass += "active ";else if (pivot === index) barClass += "pivot ";else if (currentSorted.includes(index)) barClass += "sorted ";else barClass += "defaultBar ";
 	          return _react2.default.createElement(
 	            "div",
 	            {
-	              className: "arrayElement",
+	              className: barClass,
 	              key: index,
-	              style: { height: number * 3 + "px", width: width, marginLeft: margin, marginRigh: margin, backgroundColor: backgroundColor, color: color, fontSize: fontSize } },
+	              style: { height: number * 3 + "px", width: width, marginLeft: margin, marginRight: margin, color: color, fontSize: fontSize },
+	              "aria-label": "Array value " + number,
+	              title: "Value: " + number
+	            },
 	            number
 	          );
 	        }) : null
@@ -31798,7 +31920,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#bodyContainer {\n  width: 100%;\n  height: 100%;\n  background-color: rgb(230, 230, 230);\n  text-align: center;\n}\n\n.arrayElement {\n  padding-top: 7px;\n  font-family: sans-serif;\n  font-weight: 700;\n  display: inline-block;\n}\n", ""]);
+	exports.push([module.id, "#bodyContainer {\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgb(230, 230, 230);\r\n  text-align: center;\r\n  display: flex;\r\n  flex-direction: row;\r\n  align-items: flex-end;\r\n  justify-content: center;\r\n  padding: 24px 0 0 0;\r\n  flex-wrap: nowrap;\r\n  min-height: 0;\r\n  height: 100%;\r\n  overflow-x: hidden;\r\n}\r\n\r\n.arrayElement {\r\n  padding-top: 7px;\r\n  font-family: sans-serif;\r\n  font-weight: 700;\r\n  display: flex;\r\n  align-items: flex-end;\r\n  justify-content: center;\r\n  border-radius: 6px 6px 0 0;\r\n  margin-bottom: 0;\r\n  box-shadow: 0 2px 8px rgba(0,0,0,0.08);\r\n  transition: background 0.3s, height 0.3s, color 0.2s;\r\n  user-select: none;\r\n  flex: 1 1 0;\r\n  min-width: 2px;\r\n  overflow: hidden;\r\n}\r\n\r\n/* Bar color states */\r\n.arrayElement.swapper {\r\n  background-color: rgba(219, 57, 57, 0.8);\r\n}\r\n.arrayElement.active {\r\n  background-color: rgba(78, 216, 96, 0.8);\r\n}\r\n.arrayElement.pivot {\r\n  background-color: rgba(237, 234, 59, 0.8);\r\n}\r\n.arrayElement.sorted {\r\n  background-color: rgba(169, 92, 232, 0.8);\r\n}\r\n.arrayElement.defaultBar {\r\n  background-color: rgba(66, 134, 244, 0.8);\r\n}\r\n\r\n/* Hide numbers for very thin bars */\r\n.arrayElement {\r\n  color: inherit;\r\n}\r\n.arrayElement[style*='width: 2px'],\r\n.arrayElement[style*='width: 3px'],\r\n.arrayElement[style*='width: 4px'] {\r\n  color: transparent !important;\r\n}\r\n\r\n/* Responsive design for mobile */\r\n@media (max-width: 600px) {\r\n  #bodyContainer {\r\n    min-height: 180px;\r\n    padding: 12px 0 0 0;\r\n  }\r\n  .arrayElement {\r\n    font-size: 10px !important;\r\n    padding-top: 3px;\r\n    border-radius: 4px 4px 0 0;\r\n  }\r\n}\r\n", ""]);
 	
 	// exports
 
@@ -31844,7 +31966,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  margin: 0;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n", ""]);
+	exports.push([module.id, "html, body, #app {\n  height: 100%;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n", ""]);
 	
 	// exports
 
@@ -31905,6 +32027,12 @@
 	
 	var _running = __webpack_require__(/*! ./running */ 382);
 	
+	var _selectionSort = __webpack_require__(/*! ./selectionSort */ 400);
+	
+	var _selectionSort2 = _interopRequireDefault(_selectionSort);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	exports.default = (0, _redux.combineReducers)({
 	  array: _array.array,
 	  algorithm: _algorithm.algorithm,
@@ -31915,8 +32043,171 @@
 	  currentHeapThree: _heapSort.currentHeapThree,
 	  currentSorted: _sorted.currentSorted,
 	  currentMergeX: _mergeSort.currentMergeX,
-	  isRunning: _running.isRunning
+	  isRunning: _running.isRunning,
+	  currentSelectionSort: _selectionSort2.default
 	});
+
+/***/ },
+/* 400 */
+/*!****************************************************!*\
+  !*** ./client/app/reducers/selectionSort/index.js ***!
+  \****************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = setCurrentSelectionSort;
+	var initialState = [];
+	
+	function setCurrentSelectionSort() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case "SET_CURRENT_SWAPPERS":
+	      return action.payload;
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
+/* 401 */
+/*!************************************************!*\
+  !*** ./client/app/algorithms/selectionSort.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _array = __webpack_require__(/*! ../reducers/array */ 224);
+	
+	var _swappers = __webpack_require__(/*! ../reducers/swappers */ 385);
+	
+	var _sorted = __webpack_require__(/*! ../reducers/sorted */ 381);
+	
+	var _running = __webpack_require__(/*! ../reducers/running */ 382);
+	
+	function selectionSort(stateArray, dispatch, speed) {
+	  var array = stateArray.slice(0),
+	      toDispatch = [];
+	  var n = array.length;
+	  for (var i = 0; i < n - 1; i++) {
+	    var minIdx = i;
+	    for (var j = i + 1; j < n; j++) {
+	      toDispatch.push([minIdx, j]);
+	      if (array[j] < array[minIdx]) {
+	        minIdx = j;
+	      }
+	    }
+	    if (minIdx !== i) {
+	      toDispatch.push([i, minIdx, true]);
+	      var temp = array[i];
+	      array[i] = array[minIdx];
+	      array[minIdx] = temp;
+	      toDispatch.push(array.slice(0));
+	      toDispatch.push([]);
+	    }
+	    toDispatch.push([true, i]);
+	  }
+	  toDispatch.push([true, n - 1]);
+	  handleDispatch(toDispatch, dispatch, array, speed);
+	  return array;
+	}
+	
+	function handleDispatch(toDispatch, dispatch, array, speed) {
+	  if (!toDispatch.length) {
+	    dispatch((0, _sorted.setCurrentSorted)(array.map(function (num, index) {
+	      return index;
+	    })));
+	    setTimeout(function () {
+	      dispatch((0, _swappers.setCurrentSwappers)([]));
+	      dispatch((0, _running.setRunning)(false));
+	    }, 900);
+	    return;
+	  }
+	  var dispatchFunction = toDispatch[0].length > 3 ? _array.setArray : toDispatch[0].length === 3 || toDispatch[0].length === 0 ? _swappers.setCurrentSwappers : toDispatch[0].length === 2 && typeof toDispatch[0][0] === "boolean" ? _sorted.setCurrentSorted : _swappers.setCurrentSwappers;
+	  dispatch(dispatchFunction(toDispatch.shift()));
+	  setTimeout(function () {
+	    handleDispatch(toDispatch, dispatch, array, speed);
+	  }, speed);
+	}
+	
+	exports.default = selectionSort;
+
+/***/ },
+/* 402 */
+/*!************************************************!*\
+  !*** ./client/app/algorithms/insertionSort.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _array = __webpack_require__(/*! ../reducers/array */ 224);
+	
+	var _swappers = __webpack_require__(/*! ../reducers/swappers */ 385);
+	
+	var _sorted = __webpack_require__(/*! ../reducers/sorted */ 381);
+	
+	var _running = __webpack_require__(/*! ../reducers/running */ 382);
+	
+	function insertionSort(stateArray, dispatch, speed) {
+	  var array = stateArray.slice(0),
+	      toDispatch = [];
+	  var n = array.length;
+	  for (var i = 1; i < n; i++) {
+	    var key = array[i];
+	    var j = i - 1;
+	    toDispatch.push([i, j]);
+	    while (j >= 0 && array[j] > key) {
+	      toDispatch.push([j, j + 1, true]);
+	      array[j + 1] = array[j];
+	      toDispatch.push(array.slice(0));
+	      toDispatch.push([]);
+	      j = j - 1;
+	      if (j >= 0) toDispatch.push([j, j + 1]);
+	    }
+	    array[j + 1] = key;
+	    toDispatch.push(array.slice(0));
+	    toDispatch.push([]);
+	    toDispatch.push([true, i]);
+	  }
+	  toDispatch.push([true, n - 1]);
+	  handleDispatch(toDispatch, dispatch, array, speed);
+	  return array;
+	}
+	
+	function handleDispatch(toDispatch, dispatch, array, speed) {
+	  if (!toDispatch.length) {
+	    dispatch((0, _sorted.setCurrentSorted)(array.map(function (num, index) {
+	      return index;
+	    })));
+	    setTimeout(function () {
+	      dispatch((0, _swappers.setCurrentSwappers)([]));
+	      dispatch((0, _running.setRunning)(false));
+	    }, 900);
+	    return;
+	  }
+	  var dispatchFunction = toDispatch[0].length > 3 ? _array.setArray : toDispatch[0].length === 3 || toDispatch[0].length === 0 ? _swappers.setCurrentSwappers : toDispatch[0].length === 2 && typeof toDispatch[0][0] === "boolean" ? _sorted.setCurrentSorted : _swappers.setCurrentSwappers;
+	  dispatch(dispatchFunction(toDispatch.shift()));
+	  setTimeout(function () {
+	    handleDispatch(toDispatch, dispatch, array, speed);
+	  }, speed);
+	}
+	
+	exports.default = insertionSort;
 
 /***/ }
 /******/ ]);

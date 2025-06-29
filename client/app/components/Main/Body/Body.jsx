@@ -18,7 +18,7 @@ class Body extends Component {
       currentMergeX,
     } = this.props;
 
-    const numWidth = Math.floor($(document).width() / (array.length * 3));
+    const numWidth = Math.floor(window.innerWidth / (array.length * 3));
     const width = `${numWidth}px`;
     const numMargin = array.length < 5 ?
       10 : array.length < 8 ?
@@ -40,19 +40,21 @@ class Body extends Component {
     const fontSize = `${numFont}px`
 
     return (
-      <div id="bodyContainer">
+      <div id="bodyContainer" role="region" aria-label="Sorting Visualization">
         { array.length ? array.map((number, index) => {
-          const backgroundColor = currentSwappers.includes(index) ?
-              "rgba(219, 57, 57, 0.8)" : currentBubbleTwo.includes(index) ||
-              currentQuickTwo.includes(index) || currentHeapThree.includes(index) ||
-              currentMergeX.includes(index) ?
-                "rgba(78, 216, 96, 0.8)" : pivot === index ?
-                  "rgba(237, 234, 59, 0.8)" : currentSorted.includes(index) ?
-                    "rgba(169, 92, 232, 0.8)" : "rgba(66, 134, 244, 0.8)";
+          let barClass = "arrayElement ";
+          if (currentSwappers.includes(index)) barClass += "swapper ";
+          else if (currentBubbleTwo.includes(index) || currentQuickTwo.includes(index) || currentHeapThree.includes(index) || currentMergeX.includes(index)) barClass += "active ";
+          else if (pivot === index) barClass += "pivot ";
+          else if (currentSorted.includes(index)) barClass += "sorted ";
+          else barClass += "defaultBar ";
           return <div
-            className="arrayElement"
+            className={barClass}
             key={index}
-            style={{height: `${number * 3}px`, width: width, marginLeft: margin, marginRigh: margin, backgroundColor: backgroundColor, color: color, fontSize: fontSize}}>
+            style={{height: `${number * 3}px`, width: width, marginLeft: margin, marginRight: margin, color: color, fontSize: fontSize}}
+            aria-label={`Array value ${number}`}
+            title={`Value: ${number}`}
+          >
             {number}
           </div>
         }) : null
