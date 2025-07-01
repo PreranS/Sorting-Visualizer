@@ -1,11 +1,14 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const server = require("http").createServer(app);
 
-server.listen(1337);
+// Serve static files from the React build (client/public)
+app.use(express.static(path.join(__dirname, '../client/public')));
 
-app.use(express.static(__dirname + "/.."));
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/../index.html");
+// Fallback route for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 });
+
+server.listen(1337);
