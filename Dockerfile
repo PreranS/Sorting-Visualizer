@@ -3,7 +3,7 @@ FROM node:18-alpine as build
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build && cp client/index.html client/public/index.html
+RUN npm run build && cp /app/index.html /app/client/public/index.html
 
 # Stage 2: Run server
 FROM node:18-alpine
