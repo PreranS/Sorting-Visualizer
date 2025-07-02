@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+.git/
+.gitignore
+Dockerfile
+README.md
+*.log
+sonar-project.properties
+.env
+*.md 
