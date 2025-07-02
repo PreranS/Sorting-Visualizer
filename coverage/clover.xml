@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1751450532367" clover="3.2.0">
-  <project timestamp="1751450532369" name="All files">
+<coverage generated="1751451905838" clover="3.2.0">
+  <project timestamp="1751451905838" name="All files">
     <metrics statements="17" coveredstatements="17" conditionals="42" coveredconditionals="14" methods="3" coveredmethods="3" elements="62" coveredelements="34" complexity="0" loc="17" ncloc="17" packages="1" files="1" classes="1"/>
     <file name="Body.jsx" path="C:\Users\91636\OneDrive\Documents\Full_Stack_Development\sorting_visualiser\sorting_visualizer-2\Sorting-Visualizer\client\app\components\Main\Body\Body.jsx">
       <metrics statements="17" coveredstatements="17" conditionals="42" coveredconditionals="14" methods="3" coveredmethods="3"/>
