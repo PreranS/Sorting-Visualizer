@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`renders Body 1`] = `
+<div
+  aria-label="Sorting Visualization"
+  id="bodyContainer"
+  role="region"
+>
+  <div
+    aria-label="Array value 1"
+    className="arrayElement defaultBar "
+    style={
+      {
+        "color": "white",
+        "fontSize": "18px",
+        "height": "3px",
+        "marginLeft": "8px",
+        "marginRight": "8px",
+        "width": "68px",
+      }
+    }
+    title="Value: 1"
+  >
+    1
+  </div>
+  <div
+    aria-label="Array value 2"
+    className="arrayElement defaultBar "
+    style={
+      {
+        "color": "white",
+        "fontSize": "18px",
+        "height": "6px",
+        "marginLeft": "8px",
+        "marginRight": "8px",
+        "width": "68px",
+      }
+    }
+    title="Value: 2"
+  >
+    2
+  </div>
+  <div
+    aria-label="Array value 3"
+    className="arrayElement defaultBar "
+    style={
+      {
+        "color": "white",
+        "fontSize": "18px",
+        "height": "9px",
+        "marginLeft": "8px",
+        "marginRight": "8px",
+        "width": "68px",
+      }
+    }
+    title="Value: 3"
+  >
+    3
+  </div>
+  <div
+    aria-label="Array value 4"
+    className="arrayElement defaultBar "
+    style={
+      {
+        "color": "white",
+        "fontSize": "18px",
+        "height": "12px",
+        "marginLeft": "8px",
+        "marginRight": "8px",
+        "width": "68px",
+      }
+    }
+    title="Value: 4"
+  >
+    4
+  </div>
+  <div
+    aria-label="Array value 5"
+    className="arrayElement defaultBar "
+    style={
+      {
+        "color": "white",
+        "fontSize": "18px",
+        "height": "15px",
+        "marginLeft": "8px",
+        "marginRight": "8px",
+        "width": "68px",
+      }
+    }
+    title="Value: 5"
+  >
+    5
+  </div>
+</div>
+`;
