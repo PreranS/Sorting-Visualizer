@@ -11,7 +11,7 @@ WORKDIR /app
 COPY server ./server
 COPY package*.json ./
 RUN npm install
-COPY --from=build /app/client/build ./client/build
+COPY --from=build /app/client/public ./client/build
 WORKDIR /app/server
 EXPOSE 3000
 CMD ["node", "index.js"]
