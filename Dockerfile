@@ -1,23 +1,18 @@
-# Use official Node image as base
-FROM node:18-alpine
-
-# Set working directory
+# Stage 1: Build client
+FROM node:18-alpine as build
 WORKDIR /app
-
-# Copy package.json and package-lock.json first for better caching
-COPY package*.json ./
-
-# Install dependencies
+COPY client ./client
+WORKDIR /app/client
 RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the client using webpack
 RUN npm run build
 
-# Expose app port
+# Stage 2: Run server
+FROM node:18-alpine
+WORKDIR /app
+COPY server ./server
+COPY package*.json ./
+RUN npm install
+COPY --from=build /app/client/build ./client/build
+WORKDIR /app/server
 EXPOSE 3000
-
-# Start the backend server (which serves the built client)
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
