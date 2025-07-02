@@ -1,8 +1,7 @@
 # Stage 1: Build client
 FROM node:18-alpine as build
 WORKDIR /app
-COPY client ./client
-WORKDIR /app/client
+COPY . .
 RUN npm install
 RUN npm run build
 
