@@ -11,4 +11,4 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 });
 
-server.listen(1337);
+server.listen(3000, '0.0.0.0');
